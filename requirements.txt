@@ -1,0 +1,6 @@
+plotly
+networkx
+bokeh
+rdflib
+numpy
+streamlit
