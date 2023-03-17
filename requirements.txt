@@ -1,7 +1,7 @@
-plotly
-networkx
-bokeh
-rdflib
-numpy
 streamlit
 streamlit_option_menu
+rdflib
+streamlit_agraph
+requests
+json
+owlready2

@@ -5,9 +5,10 @@ import json
 
 import rdflib
 g = rdflib.Graph()
-g.parse("movies.owl")
+g.parse("movies_project.owl")
 
-iri = "http://semanticweb.org/cleme/projet#"
+iri = "https://schema.org/"
+
 
 def get_movies(n):
     ids = imdb.get_top250_ids()[:n]
@@ -21,7 +22,7 @@ def populate_one_movie(movie_dict, graph):
 
     movie_title = movie_dict['Title']
     sparql = f"""SELECT ?a 
-    WHERE {{ ?a  <{iri}title> \"{movie_title}\" }}"""
+    WHERE {{ ?a  <{iri}mytitle> \"{movie_title}\" }}"""
     res = graph.query(sparql)
     if len(res) != 0: # Cannot Create a movie that already exists
         return
@@ -35,7 +36,7 @@ def populate_one_movie(movie_dict, graph):
     for actor in actors_list:
         # Check if exists
         sparql = f"""SELECT ?a 
-        WHERE {{ ?a  <{iri}name> \"{actor}\" }}"""
+        WHERE {{ ?a  <{iri}myname> \"{actor}\" }}"""
         res = g.query(sparql)
         if len(res) == 0:
             # Create
@@ -50,7 +51,7 @@ def populate_one_movie(movie_dict, graph):
     for director in directors_list:
         # Check if exists
         sparql = f"""SELECT ?a 
-        WHERE {{ ?a  <{iri}name> \"{director}\" }}"""
+        WHERE {{ ?a  <{iri}myname> \"{director}\" }}"""
         res = g.query(sparql)
         if len(res) == 0:
             # Create
@@ -65,7 +66,7 @@ def populate_one_movie(movie_dict, graph):
     for writer in writers_list:
         # Check if exists
         sparql = f"""SELECT ?a 
-        WHERE {{ ?a  <{iri}name> \"{writer}\" }}"""
+        WHERE {{ ?a  <{iri}myname> \"{writer}\" }}"""
         res = g.query(sparql)
         if len(res) == 0:
             # Create
@@ -82,20 +83,6 @@ def populate_one_movie(movie_dict, graph):
             continue
         populate_utils.insert_hasGenre(movie_id=movie_id, genre=genre,graph=graph)
 
-
-
-
-#actors_list = [name.strip() for name in lalistela.split(',')]
-#for actor in actors_list:
-#    sparql = f"""SELECT ?a 
-#    WHERE {{ ?a  <{iri}name> \"{actor}\" }}"""
-#    res = g.query(sparql)
-#    #for row in res:
-#    #    print(row)
-#    print(actor, len(res))
-
-
-
 if __name__ == '__main__':
 
     N = 250
@@ -106,4 +93,4 @@ if __name__ == '__main__':
         print(n)
         populate_one_movie(movies[n], g)
 
-    g.serialize("movies.owl", format="xml")
+    g.serialize("movies_project.owl", format="xml")
